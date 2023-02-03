@@ -5,14 +5,8 @@ import { SiPokemon } from 'react-icons/si'
 import { TbPokeball } from 'react-icons/tb'
 import { RiDashboardFill } from 'react-icons/ri'
 import { BsChevronDown } from 'react-icons/bs'
-import { MdCatchingPokemon} from 'react-icons/md'
-import { CgPokemon} from 'react-icons/cg'
-
-
-
-
-
-
+import { MdCatchingPokemon } from 'react-icons/md'
+import { CgPokemon } from 'react-icons/cg'
 
 
 export const SideBar = () => {
@@ -51,45 +45,57 @@ export const SideBar = () => {
      text-3xl rounded-full absolute -right-3 top-9 border border-dark cursor-pointer ${!isOpen && "rotate-180"} duration-500`}
         onClick={() => setIsOpen(!isOpen)}
       />
-      <div className=' w-full h-24 flex justify-center '>
-        {isOpen ?
-          <SiPokemon className=' text-amber-300 text-8xl rounded cursor-pointer block float-left' />
-          :
-          <TbPokeball className=' text-amber-300 text-8xl rounded cursor-pointer block float-left' />
-        }
-      </div>
+      <Link to='/'>
+        <div className=' w-full h-24 flex justify-center '>
 
+          {isOpen ?
+            <SiPokemon className=' text-amber-300 text-8xl rounded cursor-pointer block float-left' />
+            :
+            <TbPokeball className=' text-amber-300 text-8xl rounded cursor-pointer block float-left' />
+          }
+
+        </div>
+      </Link>
       <ul className="pt-3 ">
         {Menus.map((menu, index) => (
 
           <React.Fragment key={index}>
 
-            <li className={`text-white flex items-center gap-x-4 cursor-pointer p-3 hover:bg-light rounded-md
-            ${menu.spacing ? "mt-9" : "mt-2"}`}
-            >
-              <span className='text-3xl block float-left'>
-                {menu.icon ? menu.icon : <RiDashboardFill />}
-              </span>
+            <Link to={menu.to}>
 
-              <span className={`text-base font-medium flex-1 ${!isOpen && "hidden"}`}>
-                <Link to={menu.to}>{menu.title}</Link>
-              </span>
-              {menu.submenu && isOpen && (
-                <BsChevronDown className={`${subMenuOpen && "rotate-180 duration-300"}`} onClick={() => setSubMenuOpen(!subMenuOpen)} />
-              )}
-            </li>
+              <li className={`text-white flex items-center gap-x-4 cursor-pointer p-3 hover:bg-light rounded-md
+            ${menu.spacing ? "mt-9" : "mt-2"}`}
+              >
+                <span className='text-3xl block float-left'>
+                  {menu.icon ? menu.icon : <RiDashboardFill />}
+                </span>
+
+                <span className={`text-base font-medium flex-1 ${!isOpen && "hidden"}`}>
+                  {menu.title}
+                </span>
+                {menu.submenu && isOpen && (
+                  <BsChevronDown className={`${subMenuOpen && "rotate-180 duration-300"}`} onClick={() => setSubMenuOpen(!subMenuOpen)} />
+                )}
+              </li>
+
+            </Link>
             {menu.submenu && subMenuOpen && isOpen && (
+
               <ul>
                 {menu.submenuItems.map((submenu, index) => (
-                  <li className='text-white flex items-center gap-x-4 cursor-pointer p-3 hover:bg-light rounded-md px-6' key={index}>
-                    <span className='text-3xl block float-left'>
-                      {submenu.icon }
-                    </span>
-                    <Link to={submenu.to}>{submenu.title}</Link>
+                  <Link to={submenu.to} key={index}>
+                    <li className='text-white flex items-center gap-x-4 cursor-pointer p-3 hover:bg-light rounded-md px-6' >
+                      <span className='text-3xl block float-left'>
+                        {submenu.icon}
+                      </span>
+                      <span>{submenu.title}</span>
 
-                  </li>
+                    </li>
+                  </Link>
                 ))}
               </ul>
+
+
             )}
 
           </React.Fragment>

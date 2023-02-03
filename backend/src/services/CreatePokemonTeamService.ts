@@ -26,6 +26,9 @@ class CreatePokemonTeamService {
             where: { 
                 team_id: team_id
             },
+            include:{
+                pokemon:true
+            }
            
         })
        

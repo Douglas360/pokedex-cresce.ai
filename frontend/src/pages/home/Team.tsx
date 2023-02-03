@@ -1,15 +1,15 @@
 import { Button, Card, CardActions, CardContent, Grid, Typography } from "@mui/material"
 import { useEffect, useState } from "react"
 import { Loader } from "../../components/Loader"
-import PokemonCard from "../../components/PokemonCard"
+import PokemonModal from "../../components/PokemonModal"
 import { useAuth } from "../../context/useAuth"
 import { SideBar } from "../global/SideBar"
-
-
 
 export const Team = () => {
   const { listTeam, pokemonTeam, deleteTeam, loading } = useAuth()
   const [pokemonTeams, setPokemonTeams] = useState([])
+  const [selectedTeam, setselectedTeam] = useState([])
+  const [openModal, setOpenModal] = useState(false)
 
   const getTeam = async () => {
     try {
@@ -22,15 +22,22 @@ export const Team = () => {
     }
   }
 
-  const handleClick = async (pokemonData) => {
+  const handleModalOpen = async (pokemonData) => {
 
     try {
       const response = await pokemonTeam(pokemonData.id)
-      console.log(response)
+
+      setselectedTeam(response)
+      setOpenModal(true)
+      //console.log(response)
     } catch (error) {
       console.log(error)
     }
 
+  }
+
+  const handleModalClose = async () => {
+    setOpenModal(false)
   }
 
   const handleDeleteTeam = async (pokemonData) => {
@@ -38,8 +45,8 @@ export const Team = () => {
       return;
     }
     try {
-      const response = await deleteTeam(pokemonData.id)
-      //console.log(response)
+      await deleteTeam(pokemonData.id)
+
     } catch (error) {
       console.log(error)
     }
@@ -80,7 +87,7 @@ export const Team = () => {
 
                 <CardActions sx={{ backgroundColor: "#081A51", display: 'flex', justifyContent: 'center' }}>
                   <Button size="small" style={{ padding: '2px 6px', fontSize: '10px' }} variant="outlined"
-                    onClick={() => handleClick(pokemonData)}
+                    onClick={() => handleModalOpen(pokemonData)}
                   >ABRIR</Button>
                   <Button size="small" style={{ padding: '2px 6px', fontSize: '10px' }} variant="outlined"
                     onClick={() => handleDeleteTeam(pokemonData)}
@@ -93,6 +100,14 @@ export const Team = () => {
           ))
           }
         </Grid>
+
+        {openModal &&
+          <PokemonModal
+            open={openModal}
+            onClose={handleModalClose}
+            pokemonTeam={selectedTeam} />
+        }
+
 
 
 
